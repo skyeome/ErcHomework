@@ -1,8 +1,8 @@
+import React from "react";
 import { Link, Stack } from "expo-router";
 
 import { Text } from "@/components/ui/text";
 import { Center } from "@/components/ui/center";
-
 export default function NotFoundScreen() {
   return (
     <>

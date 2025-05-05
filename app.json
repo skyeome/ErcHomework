@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "test-expo",
-    "slug": "test-expo",
+    "name": "erc-homework",
+    "slug": "erc-homework",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "erc-homework",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
