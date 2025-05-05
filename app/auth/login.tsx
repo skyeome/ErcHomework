@@ -1,21 +1,28 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View } from "react-native";
 import { useAuth } from "../context/auth";
 import { useState } from "react";
+import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Center } from "@/components/ui/center";
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText } from "@/components/ui/button";
+import { EyeIcon, EyeOffIcon } from "@/components/ui/icon";
+import { Divider } from "@/components/ui/divider";
 
 export default function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleState = () => {
+    setShowPassword((showState) => !showState);
+  };
 
   const handleLogin = async () => {
     try {
-      // TODO: 실제 API 호출로 대체
       await login("dummy-token");
     } catch (error) {
       console.error("Login failed:", error);
@@ -24,7 +31,6 @@ export default function Login() {
 
   const handleGuestLogin = async () => {
     try {
-      // 게스트 로그인용 토큰
       await login("guest-token");
     } catch (error) {
       console.error("Guest login failed:", error);
@@ -32,101 +38,73 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to ERC Homework</Text>
+    <Center className="flex-1 bg-background-50">
+      <Box className="w-full max-w-[400px] p-6">
+        <VStack space="xl" className="w-full">
+          <Center>
+            <Text className="text-3xl font-bold text-typography-900">
+              Welcome to ERC Homework
+            </Text>
+          </Center>
 
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-      </View>
+          <VStack space="md" className="w-full">
+            <VStack space="xs">
+              <Text className="text-typography-500">Email</Text>
+              <Input>
+                <InputField
+                  type="text"
+                  placeholder="이메일을 입력해주세요."
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+              </Input>
+            </VStack>
 
-      <View style={styles.divider}>
-        <View style={styles.line} />
-        <Text style={styles.dividerText}>OR</Text>
-        <View style={styles.line} />
-      </View>
+            <VStack space="xs">
+              <Text className="text-typography-500">Password</Text>
+              <Input>
+                <InputField
+                  type={showPassword ? "text" : "password"}
+                  placeholder="비밀번호를 입력해주세요."
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+                <InputSlot onPress={handleState}>
+                  <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
+                </InputSlot>
+              </Input>
+            </VStack>
 
-      <TouchableOpacity style={styles.guestButton} onPress={handleGuestLogin}>
-        <Text style={styles.guestButtonText}>Continue as Guest</Text>
-      </TouchableOpacity>
-    </View>
+            <Button
+              size="lg"
+              variant="solid"
+              action="primary"
+              onPress={handleLogin}
+              className="mt-4"
+            >
+              <ButtonText>Login</ButtonText>
+            </Button>
+          </VStack>
+
+          <HStack space="sm" className="items-center">
+            <Divider className="flex-1" />
+            <Text className="text-typography-400">OR</Text>
+            <Divider className="flex-1" />
+          </HStack>
+
+          <Button
+            size="lg"
+            variant="outline"
+            action="secondary"
+            onPress={handleGuestLogin}
+          >
+            <ButtonText>Continue as Guest</ButtonText>
+          </Button>
+        </VStack>
+      </Box>
+    </Center>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 60,
-    marginBottom: 40,
-  },
-  formContainer: {
-    gap: 15,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 15,
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 30,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#ddd",
-  },
-  dividerText: {
-    marginHorizontal: 10,
-    color: "#666",
-  },
-  guestButton: {
-    backgroundColor: "#f0f0f0",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  guestButtonText: {
-    color: "#333",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

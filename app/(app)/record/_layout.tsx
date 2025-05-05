@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-export default function WorkbookLayout() {
+export default function ReadingLayout() {
   return (
     <Stack
       screenOptions={{
@@ -11,15 +11,7 @@ export default function WorkbookLayout() {
         name="index"
         options={{
           headerShown: true,
-          title: "Workbook List",
-        }}
-      />
-      <Stack.Screen
-        name="new"
-        options={{
-          headerShown: true,
-          title: "New Workbook",
-          presentation: "modal",
+          title: "Record Homework",
         }}
       />
     </Stack>

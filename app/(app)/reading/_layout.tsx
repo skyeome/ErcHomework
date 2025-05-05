@@ -2,28 +2,38 @@ import { Stack } from "expo-router";
 
 export default function ReadingLayout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
-          title: "Reading",
+          headerShown: true,
+          title: "Reading List",
         }}
       />
       <Stack.Screen
         name="search"
         options={{
+          headerShown: true,
           title: "Search Books",
+          presentation: "modal",
         }}
       />
       <Stack.Screen
         name="new"
         options={{
+          headerShown: true,
           title: "New Reading",
+          presentation: "modal",
         }}
       />
       <Stack.Screen
         name="[title]"
         options={{
+          headerShown: true,
           title: "Book Detail",
         }}
       />

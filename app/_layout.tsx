@@ -41,7 +41,7 @@ function RootLayoutNav() {
       router.replace("/auth/login");
     } else if (isAuthenticated && inAuthGroup) {
       // 인증된 상태에서 auth 그룹 페이지로 가려고 하면 홈으로 리다이렉트
-      router.replace("/");
+      router.replace("/(app)");
     }
   }, [isAuthenticated, segments]);
 
