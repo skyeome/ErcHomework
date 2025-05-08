@@ -15,14 +15,6 @@ export default function ReadingLayout() {
         }}
       />
       <Stack.Screen
-        name="search"
-        options={{
-          headerShown: true,
-          title: "Search Books",
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
         name="new"
         options={{
           headerShown: true,

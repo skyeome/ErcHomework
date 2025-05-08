@@ -11,7 +11,7 @@ export default function Record() {
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (recording) {
       interval = setInterval(() => {
         setDuration((prev) => prev + 1);

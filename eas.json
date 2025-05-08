@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 5.9.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "CLIENT_SECRET": "development_secret",
+        "NAVER_CLIENT_ID": "development_naver_client_id",
+        "NAVER_CLIENT_SECRET": "development_naver_client_secret",
+        "NAVER_BASE_URL": "https://openapi.naver.com",
+        "SOME_CODE": "development_some_code"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "CLIENT_SECRET": "preview_secret",
+        "NAVER_CLIENT_ID": "preview_naver_client_id",
+        "NAVER_CLIENT_SECRET": "preview_naver_client_secret",
+        "NAVER_BASE_URL": "https://openapi.naver.com",
+        "SOME_CODE": "preview_some_code"
+      }
+    },
+    "production": {
+      "env": {
+        "CLIENT_SECRET": "production_secret",
+        "NAVER_CLIENT_ID": "production_naver_client_id",
+        "NAVER_CLIENT_SECRET": "production_naver_client_secret",
+        "NAVER_BASE_URL": "https://openapi.naver.com",
+        "SOME_CODE": "production_some_code"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

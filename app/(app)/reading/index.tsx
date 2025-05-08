@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { Box } from "@/components/ui/box";
+import AddBook from "@/components/reading/AddBook";
 
 export default function Reading() {
   return (
-    <View>
-      <Text>Reading List</Text>
-    </View>
+    <Box className="flex-1">
+      <AddBook />
+    </Box>
   );
 }
