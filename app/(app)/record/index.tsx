@@ -4,6 +4,7 @@ import { AudioPlayer } from "@/components/record/AudioPlayer";
 import { View } from "react-native";
 import { useState, useEffect } from "react";
 import { Audio } from "expo-av";
+import WeeklyRecord from "@/components/record/WeeklyRecord";
 
 export default function Record() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -75,6 +76,7 @@ export default function Record() {
           <AudioPlayer uri={recordedUri} onDelete={handleDelete} />
         ) : null}
       </View>
+      <WeeklyRecord />
     </View>
   );
 }

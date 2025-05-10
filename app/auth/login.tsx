@@ -23,7 +23,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      await login("dummy-token");
+      await login(email + "@email.com", password);
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -31,7 +31,7 @@ export default function Login() {
 
   const handleGuestLogin = async () => {
     try {
-      await login("guest-token");
+      await login("erc8349@email.com", "erc8349!");
     } catch (error) {
       console.error("Guest login failed:", error);
     }

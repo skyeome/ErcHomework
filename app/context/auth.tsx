@@ -1,9 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth } from "@/libs/firebase";
+import { signInWithEmailAndPassword, User } from "firebase/auth";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  login: (token: string) => Promise<void>;
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -11,42 +14,57 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // 앱 시작시 토큰 확인
-    checkAuthStatus();
+    // Firebase 인증 상태 변경 감지
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        await AsyncStorage.setItem("auth_token", token);
+        setUser(user);
+        setIsAuthenticated(true);
+      } else {
+        await AsyncStorage.removeItem("auth_token");
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const login = async (email: string, password: string) => {
     try {
-      const token = await AsyncStorage.getItem("auth_token");
-      setIsAuthenticated(!!token);
-    } catch (error) {
-      console.error("Error checking auth status:", error);
-      setIsAuthenticated(false);
-    }
-  };
-
-  const login = async (token: string) => {
-    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const token = await userCredential.user.getIdToken();
       await AsyncStorage.setItem("auth_token", token);
+      setUser(userCredential.user);
       setIsAuthenticated(true);
     } catch (error) {
-      console.error("Error saving auth token:", error);
+      console.error("Error during login:", error);
+      throw error;
     }
   };
 
   const logout = async () => {
     try {
+      await auth.signOut();
       await AsyncStorage.removeItem("auth_token");
+      setUser(null);
       setIsAuthenticated(false);
     } catch (error) {
-      console.error("Error removing auth token:", error);
+      console.error("Error during logout:", error);
+      throw error;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
