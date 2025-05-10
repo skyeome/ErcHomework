@@ -1,4 +1,22 @@
 import axios from "axios";
+import dotenv from "dotenv";
+
+// 환경 변수 로드
+dotenv.config();
+
+// 환경 변수 검증
+const requiredEnvVars = {
+  NAVER_BASE_URL: process.env.NAVER_BASE_URL,
+  NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
+  NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
+};
+
+// 필수 환경 변수 검증
+Object.entries(requiredEnvVars).forEach(([key, value]) => {
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+});
 
 export interface SearchResult {
   lastBuildDate: string;
@@ -21,25 +39,18 @@ export interface BookItem {
 }
 
 export const bookSearch = axios.create({
-  baseURL: import.meta.env.PROD ? process.env.NAVER_BASE_URL : "/api",
+  baseURL: requiredEnvVars.NAVER_BASE_URL,
   headers: {
     "Content-type": "application/json; charset=UTF-8",
-    "X-Naver-Client-Id": import.meta.env.DEV
-      ? process.env.NAVER_CLIENT_ID
-      : undefined,
-    "X-Naver-Client-Secret": import.meta.env.DEV
-      ? process.env.NAVER_CLIENT_SECRET
-      : undefined,
+    "X-Naver-Client-Id": requiredEnvVars.NAVER_CLIENT_ID,
+    "X-Naver-Client-Secret": requiredEnvVars.NAVER_CLIENT_SECRET,
   },
 });
 
 export const getBooks = async (query?: string, start?: number) => {
   if (query === undefined || query === "") return;
-  const { data } = await bookSearch.get<SearchResult>(
-    import.meta.env.PROD ? "search" : "book.json",
-    {
-      params: { query, display: 10, start: start ?? 1 },
-    }
-  );
+  const { data } = await bookSearch.get<SearchResult>("search", {
+    params: { query, display: 10, start: start ?? 1 },
+  });
   return data;
 };
