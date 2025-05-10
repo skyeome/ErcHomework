@@ -1,12 +1,18 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useEffect } from "react";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import {
+  focusManager,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Slot, useRouter, useSegments } from "expo-router";
@@ -54,11 +60,23 @@ function RootLayoutNav() {
   );
 }
 
+const queryClient = new QueryClient();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+
+  function onAppStateChange(status: AppStateStatus) {
+    if (Platform.OS !== "web") {
+      focusManager.setFocused(status === "active");
+    }
+  }
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", onAppStateChange);
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     if (error) throw error;
@@ -75,8 +93,10 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
