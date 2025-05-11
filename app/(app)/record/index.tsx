@@ -1,18 +1,24 @@
 // 녹음 기능 구현을 위한 컴포넌트 및 라이브러리 임포트
 import SelectRecordDate from "@/components/record/SelectRecordDate";
 import { RecordButton } from "@/components/record/RecordButton";
-import { AudioPlayer } from "@/components/record/AudioPlayer";
 import { View } from "react-native";
 import { useState, useEffect } from "react";
 import { Audio } from "expo-av";
 import WeeklyRecord from "@/components/record/WeeklyRecord";
 import RecordComplete from "@/components/record/RecordComplete";
+import useRecordUpload from "@/hooks/useRecordUpload";
 
 export default function Record() {
   // 녹음 상태 관리를 위한 상태 변수들
   const [recording, setRecording] = useState<Audio.Recording | null>(null); // 현재 녹음 객체
   const [recordedUri, setRecordedUri] = useState<string | null>(null); // 녹음 파일 URI
   const [duration, setDuration] = useState(0); // 녹음 시간(초)
+  const { handleSubmit } = useRecordUpload({
+    type: "record",
+    recordingUri: recordedUri ?? undefined,
+    setRecordingUri: (uri) => setRecordedUri(uri ?? null),
+    date: new Date(),
+  });
 
   // 녹음 시간 업데이트를 위한 인터벌 관리
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function Record() {
 
         // 실제 녹음 시작
         const { recording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY
+          Audio.RecordingOptionsPresets.HIGH_QUALITY,
         );
         setRecording(recording);
         setDuration(0);
@@ -67,7 +73,7 @@ export default function Record() {
   };
 
   return (
-    <View className="flex-1 w-full">
+    <View className="w-full flex-1">
       {/* 날짜 선택 컴포넌트 */}
       <SelectRecordDate />
       <View className="flex-1 items-center justify-center">
@@ -88,7 +94,11 @@ export default function Record() {
           />
         ) : recordedUri ? (
           // 녹음 완료 상태: 오디오 플레이어
-          <RecordComplete uri={recordedUri} onDelete={handleDelete} />
+          <RecordComplete
+            uri={recordedUri}
+            onDelete={handleDelete}
+            handleSubmit={handleSubmit}
+          />
         ) : null}
       </View>
       {/* 주간 기록 목록 표시 */}

@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
+import { useColorScheme } from "@/components/useColorScheme";
 import { getThisWeekRecord } from "@/api/record";
 import { generateWeekDates } from "@/hooks/getWeekDate";
-import { View, Text } from "react-native";
+import { View } from "@/components/ui/view";
+import { Text } from "@/components/ui/text";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/app/context/auth";
 
 const weekItems = ["Mon.", "Tue.", "Wed.", "Thu.", "Fri."];
 
 function WeeklyRecord() {
+  const colorScheme = useColorScheme();
   const { user } = useAuth();
   const { data } = useQuery({
     queryKey: ["record", "weekly"],
@@ -28,43 +31,32 @@ function WeeklyRecord() {
 
   return (
     <View className="h-20">
-      <View className="relative z-10 w-full h-full mx-auto px-6 pt-4 bg-gray-100 dark:bg-gray-800">
-        <View className="flex-row justify-between px-3.5">
+      <View className="relative z-10 mx-auto h-full w-full bg-background-50 px-5 pt-4">
+        <View className="flex-row justify-between px-3">
           {weekItems.map((item) => (
-            <Text key={item} className="text-sm">
+            <Text key={item} className="text-sm text-black dark:text-white">
               {item}
             </Text>
           ))}
         </View>
 
-        <View className="flex-row justify-between mt-1">
+        <View className="flex-row justify-between px-2 py-1.5">
           {status.map((item, index) => (
-            <View key={index} className="w-8">
+            <View key={index} className="h-7 w-7">
               {item ? (
-                <Ionicons
-                  name="checkmark-circle"
-                  size={38}
-                  color="#3b82f6"
-                  style={{ marginLeft: -3 }}
-                />
+                <Ionicons name="checkmark-circle" size={24} color="#3b82f6" />
               ) : (
-                <View />
+                <Ionicons
+                  name="ellipse-outline"
+                  size={24}
+                  color={colorScheme === "dark" ? "#000" : "#fff"}
+                />
               )}
             </View>
           ))}
         </View>
 
-        <View className="absolute top-10 left-6 -z-10 flex-row justify-between w-full h-8 rounded-full bg-gray-200 dark:bg-gray-700">
-          {status.map((item, index) => (
-            <View key={index} className={`w-8 h-8 items-center justify-center`}>
-              <View
-                className={`w-${item ? "7.5" : "2.5"} h-${
-                  item ? "7.5" : "2.5"
-                } rounded-full bg-white dark:bg-gray-900`}
-              />
-            </View>
-          ))}
-        </View>
+        <View className="absolute left-6 top-10 -z-10 h-8 w-full rounded-full bg-background-200" />
       </View>
     </View>
   );

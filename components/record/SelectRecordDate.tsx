@@ -1,11 +1,15 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { useState } from "react";
+import { Alert, Platform } from "react-native";
+import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useDateStore } from "@/store/useDateStore";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { Box } from "../ui/box";
+import { Text } from "../ui/text";
+import { Button } from "../ui/button";
 
 const SelectRecordDate = () => {
+  const isIOS = Platform.OS === "ios";
   const now = new Date();
   const prevWeek = new Date();
   prevWeek.setDate(prevWeek.getDate() - 7);
@@ -28,28 +32,32 @@ const SelectRecordDate = () => {
   };
 
   return (
-    <View className="flex-row items-center justify-between px-4 py-2 bg-white">
-      <Text className="text-lg font-medium text-gray-900">날짜 선택</Text>
-      <TouchableOpacity
-        onPress={() => setShow(true)}
-        className="flex-row items-center px-4 py-2 bg-gray-100 rounded-lg"
-      >
-        <Text className="text-base text-gray-700">
-          {format(date, "yyyy년 MM월 dd일", { locale: ko })}
+    <React.Fragment>
+      <Box className="flex-row items-center justify-between bg-white px-4 py-2 dark:bg-background-50">
+        <Text className="text-lg font-medium text-gray-900 dark:text-gray-50">
+          날짜 선택
         </Text>
-      </TouchableOpacity>
+        <Button
+          onPress={() => setShow(true)}
+          className="flex-row items-center rounded-lg bg-gray-100 px-4 py-2 dark:bg-background-200"
+        >
+          <Text className="text-base text-gray-700 dark:text-gray-100">
+            {format(date, "yyyy년 MM월 dd일", { locale: ko })}
+          </Text>
+        </Button>
+      </Box>
       {show && (
         <DateTimePicker
           value={date}
           mode="date"
-          display="default"
+          display={isIOS ? "inline" : "default"}
           onChange={onDateChange}
           minimumDate={prevWeek}
           maximumDate={now}
           locale="ko-KR"
         />
       )}
-    </View>
+    </React.Fragment>
   );
 };
 export default SelectRecordDate;
