@@ -17,6 +17,7 @@ import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { AuthProvider, useAuth } from "./context/auth";
+import useAuthChange from "@/hooks/useAuthChange";
 
 import "../global.css";
 
@@ -38,6 +39,9 @@ function RootLayoutNav() {
   const { isAuthenticated } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+
+  // Add useAuthChange hook to handle authentication state changes
+  useAuthChange();
 
   useEffect(() => {
     const inAuthGroup = segments[0] === "auth";

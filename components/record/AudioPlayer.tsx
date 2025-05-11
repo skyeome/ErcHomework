@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Audio } from "expo-av";
 import { FontAwesome } from "@expo/vector-icons";
 
-interface AudioPlayerProps {
+export interface AudioPlayerProps {
   uri: string;
   onDelete: () => void;
 }
@@ -28,7 +28,7 @@ export const AudioPlayer = ({ uri, onDelete }: AudioPlayerProps) => {
       const { sound } = await Audio.Sound.createAsync(
         { uri },
         { shouldPlay: false },
-        onPlaybackStatusUpdate
+        onPlaybackStatusUpdate,
       );
       setSound(sound);
       const status = await sound.getStatusAsync();
@@ -68,10 +68,10 @@ export const AudioPlayer = ({ uri, onDelete }: AudioPlayerProps) => {
 
   return (
     <View className="items-center justify-center p-4">
-      <View className="flex-row items-center space-x-4">
+      <View className="flex-row items-center gap-3 space-x-4">
         <TouchableOpacity
           onPress={togglePlayback}
-          className="w-12 h-12 rounded-full bg-blue-500 items-center justify-center"
+          className="h-12 w-12 items-center justify-center rounded-full bg-blue-500"
         >
           <FontAwesome
             name={isPlaying ? "pause" : "play"}
@@ -86,7 +86,7 @@ export const AudioPlayer = ({ uri, onDelete }: AudioPlayerProps) => {
         </View>
         <TouchableOpacity
           onPress={onDelete}
-          className="w-12 h-12 rounded-full bg-red-500 items-center justify-center"
+          className="h-12 w-12 items-center justify-center rounded-full bg-red-500"
         >
           <FontAwesome name="trash" size={20} color="white" />
         </TouchableOpacity>
