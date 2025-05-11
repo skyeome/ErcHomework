@@ -18,6 +18,7 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { AuthProvider, useAuth } from "./context/auth";
 import useAuthChange from "@/hooks/useAuthChange";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "../global.css";
 
@@ -56,11 +57,15 @@ function RootLayoutNav() {
   }, [isAuthenticated, segments]);
 
   return (
-    <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Slot />
-      </ThemeProvider>
-    </GluestackUIProvider>
+    <SafeAreaProvider>
+      <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Slot />
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </SafeAreaProvider>
   );
 }
 
