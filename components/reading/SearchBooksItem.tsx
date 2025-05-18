@@ -1,5 +1,4 @@
 import { useRouter } from "expo-router";
-import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { format } from "date-fns";
 import { BookItem } from "@/api/search";
 import { Box } from "../ui/box";
@@ -7,7 +6,6 @@ import { HStack } from "../ui/hstack";
 import { Image } from "../ui/image";
 import { Text } from "../ui/text";
 import { Button, ButtonGroup, ButtonIcon, ButtonText } from "../ui/button";
-import { Ionicons } from "@expo/vector-icons";
 import { VStack } from "../ui/vstack";
 import { AddIcon } from "../ui/icon";
 
@@ -16,7 +14,6 @@ type SearchBooksItemProps = {
 };
 
 const SearchBooksItem = ({ item }: SearchBooksItemProps) => {
-  const theme = useColorScheme();
   const router = useRouter();
   const handlePressNew = () => {
     router.push({
@@ -31,13 +28,17 @@ const SearchBooksItem = ({ item }: SearchBooksItemProps) => {
   return (
     <Box className="border-b border-gray-300 py-4 dark:border-gray-700">
       <HStack space="md" className="items-center">
-        <Image
-          source={{ uri: item?.image }}
-          width={70}
-          height={110}
-          alt={item?.title}
-          className="h-[110px] w-[70px]"
-        />
+        <Box className="h-[110px] w-[70px] bg-background-100">
+          {item?.image && (
+            <Image
+              source={{ uri: item?.image }}
+              width={70}
+              height={110}
+              alt={item?.title}
+              className="h-[110px] w-[70px]"
+            />
+          )}
+        </Box>
         <VStack className="h-full flex-1" space="sm">
           <Text numberOfLines={2} ellipsizeMode="tail" size="sm">
             {item?.title}

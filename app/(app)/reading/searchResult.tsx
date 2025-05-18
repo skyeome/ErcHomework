@@ -7,6 +7,7 @@ import { getBooks } from "@/api/search";
 import { Box } from "@/components/ui/box";
 import ReadBooksItem from "@/components/reading/SearchBooksItem";
 import SearchBooksSkeleton from "@/components/reading/SearchBooksSkeleton";
+import SearchBooksNone from "@/components/reading/SearchBooksNone";
 
 type RouteParams = {
   searchTerm: string;
@@ -29,7 +30,10 @@ const SearchResult = () => {
         ? lastPage.start + 10
         : undefined,
   });
-  const bookItems = data?.pages.map((page) => page?.items).flat();
+  const bookItems = data?.pages
+    .map((page) => page?.items)
+    .flat()
+    .filter((item) => item !== undefined);
 
   const handleReachEnd = () => {
     if (hasNextPage) {
@@ -50,12 +54,14 @@ const SearchResult = () => {
       </Box>
     );
 
+  if (!bookItems || bookItems.length === 0) return <SearchBooksNone />;
+
   return (
     <Box className="p-4">
-      {bookItems && bookItems.length > 0 && (
+      {bookItems && (
         <FlatList
           data={bookItems}
-          keyExtractor={(item) => item?.link ?? ""}
+          keyExtractor={(item) => item.link}
           onEndReached={handleReachEnd}
           onEndReachedThreshold={0.5}
           renderItem={({ item }) => <ReadBooksItem item={item} />}
