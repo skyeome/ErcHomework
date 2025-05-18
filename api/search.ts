@@ -1,10 +1,11 @@
 import axios from "axios";
+import Constants from "expo-constants";
 
 // 환경 변수 접근
 const requiredEnvVars = {
-  NAVER_API_BASE_URL: process.env.NAVER_BASE_URL,
-  NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
-  NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
+  NAVER_API_BASE_URL: Constants.expoConfig?.extra?.NAVER_BASE_URL,
+  NAVER_CLIENT_ID: Constants.expoConfig?.extra?.NAVER_CLIENT_ID,
+  NAVER_CLIENT_SECRET: Constants.expoConfig?.extra?.NAVER_CLIENT_SECRET,
 };
 
 // 필수 환경 변수 검증
