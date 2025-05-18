@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { useAuth } from "../context/auth";
 import { useState } from "react";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
@@ -38,73 +38,75 @@ export default function Login() {
   };
 
   return (
-    <Center className="flex-1 bg-background-50">
-      <Box className="w-full max-w-[400px] p-6">
-        <VStack space="xl" className="w-full">
-          <Center>
-            <Text className="text-3xl font-bold text-typography-900">
-              Welcome to ERC Homework
-            </Text>
-          </Center>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <Center className="flex-1 bg-background-50">
+        <Box className="w-full max-w-[400px] p-6">
+          <VStack space="xl" className="w-full">
+            <Center>
+              <Text className="text-3xl font-bold text-typography-900">
+                Welcome to ERC Homework
+              </Text>
+            </Center>
 
-          <VStack space="md" className="w-full">
-            <VStack space="xs">
-              <Text className="text-typography-500">Email</Text>
-              <Input>
-                <InputField
-                  type="text"
-                  placeholder="이메일을 입력해주세요."
-                  value={email}
-                  onChangeText={setEmail}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                />
-              </Input>
+            <VStack space="md" className="w-full">
+              <VStack space="xs">
+                <Text className="text-typography-500">Email</Text>
+                <Input>
+                  <InputField
+                    type="text"
+                    placeholder="이메일을 입력해주세요."
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                  />
+                </Input>
+              </VStack>
+
+              <VStack space="xs">
+                <Text className="text-typography-500">Password</Text>
+                <Input>
+                  <InputField
+                    type={showPassword ? "text" : "password"}
+                    placeholder="비밀번호를 입력해주세요."
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPassword}
+                  />
+                  <InputSlot onPress={handleState}>
+                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
+                  </InputSlot>
+                </Input>
+              </VStack>
+
+              <Button
+                size="lg"
+                variant="solid"
+                action="primary"
+                onPress={handleLogin}
+                className="mt-4"
+              >
+                <ButtonText>Login</ButtonText>
+              </Button>
             </VStack>
 
-            <VStack space="xs">
-              <Text className="text-typography-500">Password</Text>
-              <Input>
-                <InputField
-                  type={showPassword ? "text" : "password"}
-                  placeholder="비밀번호를 입력해주세요."
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                />
-                <InputSlot onPress={handleState}>
-                  <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
-                </InputSlot>
-              </Input>
-            </VStack>
+            <HStack space="sm" className="items-center">
+              <Divider className="flex-1" />
+              <Text className="text-typography-400">OR</Text>
+              <Divider className="flex-1" />
+            </HStack>
 
             <Button
               size="lg"
-              variant="solid"
-              action="primary"
-              onPress={handleLogin}
-              className="mt-4"
+              variant="outline"
+              action="secondary"
+              onPress={handleGuestLogin}
             >
-              <ButtonText>Login</ButtonText>
+              <ButtonText>Continue as Guest</ButtonText>
             </Button>
           </VStack>
-
-          <HStack space="sm" className="items-center">
-            <Divider className="flex-1" />
-            <Text className="text-typography-400">OR</Text>
-            <Divider className="flex-1" />
-          </HStack>
-
-          <Button
-            size="lg"
-            variant="outline"
-            action="secondary"
-            onPress={handleGuestLogin}
-          >
-            <ButtonText>Continue as Guest</ButtonText>
-          </Button>
-        </VStack>
-      </Box>
-    </Center>
+        </Box>
+      </Center>
+    </KeyboardAvoidingView>
   );
 }

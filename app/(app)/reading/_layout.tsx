@@ -11,22 +11,28 @@ export default function ReadingLayout() {
         name="index"
         options={{
           headerShown: true,
-          title: "Reading List",
+          title: "Reading Homework",
+        }}
+      />
+      <Stack.Screen
+        name="search"
+        options={{
+          headerShown: true,
+          title: "Book Search",
+        }}
+      />
+      <Stack.Screen
+        name="searchResult"
+        options={{
+          headerShown: true,
+          title: "Book Search Result",
         }}
       />
       <Stack.Screen
         name="new"
         options={{
           headerShown: true,
-          title: "New Reading",
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
-        name="[title]"
-        options={{
-          headerShown: true,
-          title: "Book Detail",
+          title: "New Reading Homework",
         }}
       />
     </Stack>

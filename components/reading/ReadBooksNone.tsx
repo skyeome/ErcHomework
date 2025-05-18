@@ -5,7 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 const ReadBooksNone = () => {
   return (
     <View className="flex-1 flex-col justify-center">
-      <Text className="text-lg font-bold text-center">
+      <Text className="text-center text-lg font-bold">
         제출한 숙제가 없습니다.
       </Text>
       <View className="flex-row justify-center">

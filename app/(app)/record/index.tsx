@@ -7,17 +7,19 @@ import { Audio } from "expo-av";
 import WeeklyRecord from "@/components/record/WeeklyRecord";
 import RecordComplete from "@/components/record/RecordComplete";
 import useRecordUpload from "@/hooks/useRecordUpload";
+import { useDateStore } from "@/store/useDateStore";
 
 export default function Record() {
   // 녹음 상태 관리를 위한 상태 변수들
   const [recording, setRecording] = useState<Audio.Recording | null>(null); // 현재 녹음 객체
   const [recordedUri, setRecordedUri] = useState<string | null>(null); // 녹음 파일 URI
   const [duration, setDuration] = useState(0); // 녹음 시간(초)
+  const { date } = useDateStore();
   const { handleSubmit } = useRecordUpload({
     type: "record",
     recordingUri: recordedUri ?? undefined,
     setRecordingUri: (uri) => setRecordedUri(uri ?? null),
-    date: new Date(),
+    date,
   });
 
   // 녹음 시간 업데이트를 위한 인터벌 관리

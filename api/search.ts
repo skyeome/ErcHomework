@@ -1,22 +1,22 @@
 import axios from "axios";
-import dotenv from "dotenv";
 
-// 환경 변수 로드
-dotenv.config();
-
-// 환경 변수 검증
+// 환경 변수 접근
 const requiredEnvVars = {
-  NAVER_BASE_URL: process.env.NAVER_BASE_URL,
+  NAVER_API_BASE_URL: process.env.NAVER_BASE_URL,
   NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
   NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
 };
 
 // 필수 환경 변수 검증
-Object.entries(requiredEnvVars).forEach(([key, value]) => {
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-});
+if (!requiredEnvVars.NAVER_API_BASE_URL) {
+  throw new Error("Missing required environment variable: NAVER_BASE_URL");
+}
+if (!requiredEnvVars.NAVER_CLIENT_ID) {
+  throw new Error("Missing required environment variable: NAVER_CLIENT_ID");
+}
+if (!requiredEnvVars.NAVER_CLIENT_SECRET) {
+  throw new Error("Missing required environment variable: NAVER_CLIENT_SECRET");
+}
 
 export interface SearchResult {
   lastBuildDate: string;
@@ -39,7 +39,7 @@ export interface BookItem {
 }
 
 export const bookSearch = axios.create({
-  baseURL: requiredEnvVars.NAVER_BASE_URL,
+  baseURL: requiredEnvVars.NAVER_API_BASE_URL,
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     "X-Naver-Client-Id": requiredEnvVars.NAVER_CLIENT_ID,
