@@ -9,24 +9,23 @@ import { setNotification } from "@/api/admin";
 import { Alert } from "react-native";
 import { useAuth } from "@/app/context/auth";
 import { useUserStore } from "@/store/useUserStore";
-import * as FileSystem from "expo-file-system";
+import { useDateStore } from "@/store/useDateStore";
 
 interface RecordUploadData {
   type: string;
   recordingUri?: string;
   setRecordingUri: (uri: string | undefined) => void;
-  date?: Date;
 }
 
 function useRecordUpload({
   type,
   recordingUri,
   setRecordingUri,
-  date,
 }: RecordUploadData) {
   let recordUrl: string | undefined;
   const { user: authUser } = useAuth();
   const { user } = useUserStore();
+  const { date } = useDateStore();
   const [isUploading, setIsUploading] = useState(false);
   const { refetch } = useQuery({
     queryKey: ["record", "weekly"],
